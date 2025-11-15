@@ -45,6 +45,8 @@ function Login() {
               <div className="text-sm text-red-800">{error}</div>
             </div>
           )}
+          <input type="text" style={{display: 'none'}} />
+          <input type="password" style={{display: 'none'}} />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="username" className="sr-only">
@@ -55,6 +57,9 @@ function Login() {
                 name="username"
                 type="text"
                 autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-bright-blue focus:border-bright-blue focus:z-10 sm:text-sm"
                 placeholder="Username"
@@ -70,7 +75,7 @@ function Login() {
                 id="password"
                 name="password"
                 type="password"
-                autoComplete="new-password"
+                autoComplete="off"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-bright-blue focus:border-bright-blue focus:z-10 sm:text-sm"
                 placeholder="Password"
@@ -88,11 +93,6 @@ function Login() {
             >
               {loading ? 'Signing in...' : 'Sign in'}
             </button>
-          </div>
-
-          <div className="text-sm text-center text-gray-600">
-            <p className="mb-2">Test accounts:</p>
-            <p>Username: <code className="bg-white px-2 py-1 rounded">user1</code> / Password: <code className="bg-white px-2 py-1 rounded">password123</code></p>
           </div>
         </form>
       </div>
