@@ -221,6 +221,7 @@
 
 - [x] 10. Initialize frontend React application
 
+
   - [x] 10.1 Create Vite React project
 
 
@@ -259,8 +260,11 @@
     - Create src/hooks/useApi.js hook for data fetching with loading and error states
     - _Requirements: 8.1_
 
-- [ ] 11. Implement frontend authentication pages
-  - [ ] 11.1 Create login page
+- [x] 11. Implement frontend authentication pages
+
+  - [x] 11.1 Create login page
+
+
     - Create src/pages/Login.jsx with login form
     - Include username and password input fields
     - Call auth service login method on form submit
@@ -268,7 +272,9 @@
     - Redirect to dashboard after successful login
     - Display error messages for failed login
     - _Requirements: 8.1_
-  - [ ] 11.2 Create registration page
+  - [x] 11.2 Create registration page
+
+
     - Create src/pages/Register.jsx with registration form
     - Include username, email, password, and role fields
     - Validate form inputs (email format, password length)
@@ -276,13 +282,17 @@
     - Redirect to login page after successful registration
     - Display error messages for validation failures
     - _Requirements: 8.1_
-  - [ ] 11.3 Create protected route component
+  - [x] 11.3 Create protected route component
+
+
     - Create src/components/common/ProtectedRoute.jsx
     - Check for valid access token in localStorage
     - Redirect to login if not authenticated
     - Render children if authenticated
     - _Requirements: 8.1_
-  - [ ] 11.4 Set up routing
+  - [x] 11.4 Set up routing
+
+
     - Configure React Router in src/App.jsx
     - Define routes: /login, /register, /dashboard, /transactions, /budgets, /reports
     - Wrap protected routes with ProtectedRoute component
