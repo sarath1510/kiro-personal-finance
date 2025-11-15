@@ -299,23 +299,32 @@
     - Add navigation bar with logout button
     - _Requirements: 8.1_
 
-- [ ] 12. Implement dashboard page
-  - [ ] 12.1 Create account summary component
+- [x] 12. Implement dashboard page
+
+  - [x] 12.1 Create account summary component
+
+
     - Create src/components/dashboard/AccountSummary.jsx
     - Fetch transactions from API on component mount
     - Calculate total balance (sum of income - sum of expenses)
     - Calculate monthly income (sum of income transactions for current month)
     - Calculate monthly expenses (sum of expense transactions for current month)
     - Display metrics in card layout
+
+
     - _Requirements: 8.2_
   - [ ] 12.2 Create recent transactions component
     - Create src/components/dashboard/RecentTransactions.jsx
     - Fetch last 10 transactions from API
+
+
     - Display in table format with date, description, category, amount
     - Add link to full transactions page
     - _Requirements: 8.2_
   - [ ] 12.3 Create quick add transaction modal
     - Create src/components/dashboard/QuickAddModal.jsx
+
+
     - Include form fields: amount, date, category, description, type (income/expense)
     - Fetch categories from API for dropdown
     - Submit transaction to API on form submit
