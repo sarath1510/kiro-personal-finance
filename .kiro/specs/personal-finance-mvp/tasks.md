@@ -37,19 +37,26 @@
     - Document how to obtain SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY
     - _Requirements: 11.4, 11.7_
 
-- [ ] 3. Implement backend authentication utilities
-  - [ ] 3.1 Create authentication utility functions
+- [x] 3. Implement backend authentication utilities
+
+  - [x] 3.1 Create authentication utility functions
+
+
     - Write netlify/functions/utils/auth.js with hashPassword, comparePassword, generateToken, verifyToken functions
     - Use bcrypt with 10 salt rounds for password hashing
     - Use jsonwebtoken for JWT generation with 15-minute access token expiration
     - Include user ID and role in JWT payload
     - _Requirements: 1.1, 1.2, 1.3, 2.3, 9.1, 9.2, 9.3_
-  - [ ] 3.2 Create database utility functions
+  - [x] 3.2 Create database utility functions
+
+
     - Write netlify/functions/utils/db.js with Supabase client initialization
     - Use SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from environment
     - Export configured Supabase client for use in functions
     - _Requirements: 7.1_
-  - [ ] 3.3 Create validation utility functions
+  - [x] 3.3 Create validation utility functions
+
+
     - Write netlify/functions/utils/validation.js with input validation functions
     - Implement validateTransaction, validateBudget, validateUser functions
     - Validate date format (YYYY-MM-DD), numeric amounts, required fields
