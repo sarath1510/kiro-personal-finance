@@ -10,9 +10,9 @@
 -- Password for all users: "password123"
 -- These hashes are generated with bcrypt, 10 salt rounds
 INSERT INTO users (id, username, email, password_hash, role, created_at) VALUES
-  ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'hardcoder1', 'hardcoder1@example.com', '$2b$10$K7L/MtJ8Yj8qYqYqYqYqYuYqYqYqYqYqYqYqYqYqYqYqYqYqYqYqY', 'hardcoder', '2024-01-01 10:00:00'),
-  ('b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a22', 'user1', 'user1@example.com', '$2b$10$K7L/MtJ8Yj8qYqYqYqYqYuYqYqYqYqYqYqYqYqYqYqYqYqYqYqYqY', 'user', '2024-01-02 10:00:00'),
-  ('c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a33', 'user2', 'user2@example.com', '$2b$10$K7L/MtJ8Yj8qYqYqYqYqYuYqYqYqYqYqYqYqYqYqYqYqYqYqYqYqY', 'user', '2024-01-03 10:00:00')
+  ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'hardcoder1', 'hardcoder1@example.com', '$2b$10$wr4Xfm3qMRFup/yd6kJzeec.aZO3Euub2RQN13H6mP4wdfHByQhZO', 'hardcoder', '2024-01-01 10:00:00'),
+  ('b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a22', 'user1', 'user1@example.com', '$2b$10$wr4Xfm3qMRFup/yd6kJzeec.aZO3Euub2RQN13H6mP4wdfHByQhZO', 'user', '2024-01-02 10:00:00'),
+  ('c2eebc99-9c0b-4ef8-bb6d-6bb9bd380a33', 'user2', 'user2@example.com', '$2b$10$wr4Xfm3qMRFup/yd6kJzeec.aZO3Euub2RQN13H6mP4wdfHByQhZO', 'user', '2024-01-03 10:00:00')
 ON CONFLICT (id) DO NOTHING;
 
 -- Insert categories for hardcoder1
