@@ -330,6 +330,7 @@
     - Fetch categories from API for dropdown
     - Submit transaction to API on form submit
 
+
     - Close modal and refresh transactions on success
 
 
@@ -364,38 +365,51 @@
 
     - Pass filter values to parent component
     - _Requirements: 8.3_
-  - [ ] 13.3 Create transaction form component
+
+  - [x] 13.3 Create transaction form component
+
+
     - Create src/components/transactions/TransactionForm.jsx
     - Include fields: amount, date, category, description, type
     - Support both create and edit modes
     - Validate required fields
     - Submit to API on form submit
+
     - _Requirements: 8.3_
+
   - [ ] 13.4 Create pagination component
     - Create src/components/common/Pagination.jsx
     - Display page numbers and next/previous buttons
+
     - Handle page change events
     - Show current page and total pages
+
     - _Requirements: 8.3_
   - [ ] 13.5 Assemble transactions page
     - Create src/pages/Transactions.jsx
+
     - Render TransactionFilters, TransactionList, and Pagination components
     - Manage filter state and pass to API calls
     - Add button to open transaction form for creating new transactions
     - _Requirements: 8.3_
 
-- [ ] 14. Implement budgets page
+
+- [x] 14. Implement budgets page
+
+
   - [ ] 14.1 Create budget list component
     - Create src/components/budgets/BudgetList.jsx
     - Fetch budgets from API on component mount
     - Display each budget with category, amount, period
     - Render BudgetUtilization component for each budget
+
     - Add delete button for each budget
     - _Requirements: 8.4_
   - [ ] 14.2 Create budget utilization component
     - Create src/components/budgets/BudgetUtilization.jsx
     - Calculate utilization percentage (spent / budget * 100)
     - Render progress bar with color coding: green (<70%), yellow (70-90%), red (>90%)
+
     - Display percentage and amounts (spent / budget)
     - _Requirements: 8.4_
   - [ ] 14.3 Create budget form component
