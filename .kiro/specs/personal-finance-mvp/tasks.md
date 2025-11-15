@@ -1,0 +1,462 @@
+# Implementation Plan
+
+- [-] 1. Initialize project structure and repository
+
+  - Create public GitHub repository named "kiro-personal-finance"
+  - Initialize with .gitignore for Node.js projects
+  - Create top-level directories: frontend/, netlify/functions/, sql/, .github/workflows/
+  - Create README.md with project overview
+  - Create .env.example with all required environment variables
+  - _Requirements: 11.2, 12.1, 12.2, 12.4_
+
+- [ ] 2. Set up database schema and seed data
+  - [ ] 2.1 Create database migration script
+    - Write sql/migrations.sql with CREATE TABLE statements for users, categories, transactions, budgets
+    - Add foreign key constraints and indexes
+    - Include CHECK constraints for role and period fields
+    - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
+  - [ ] 2.2 Create database seed script
+    - Write sql/seed.sql with INSERT statements for 3 sample users (1 hardcoder, 2 users)
+    - Add default categories for each user (groceries, entertainment, salary, utilities, etc.)
+    - Insert 30 sample transactions across different categories and dates
+    - Insert 4 example budgets with different periods
+    - _Requirements: 7.7_
+  - [ ] 2.3 Document Supabase setup instructions
+    - Add Supabase project creation steps to README.md
+    - Document how to run migrations.sql in Supabase SQL editor
+    - Document how to run seed.sql
+    - Document how to obtain SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY
+    - _Requirements: 11.4, 11.7_
+
+- [ ] 3. Implement backend authentication utilities
+  - [ ] 3.1 Create authentication utility functions
+    - Write netlify/functions/utils/auth.js with hashPassword, comparePassword, generateToken, verifyToken functions
+    - Use bcrypt with 10 salt rounds for password hashing
+    - Use jsonwebtoken for JWT generation with 15-minute access token expiration
+    - Include user ID and role in JWT payload
+    - _Requirements: 1.1, 1.2, 1.3, 2.3, 9.1, 9.2, 9.3_
+  - [ ] 3.2 Create database utility functions
+    - Write netlify/functions/utils/db.js with Supabase client initialization
+    - Use SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY from environment
+    - Export configured Supabase client for use in functions
+    - _Requirements: 7.1_
+  - [ ] 3.3 Create validation utility functions
+    - Write netlify/functions/utils/validation.js with input validation functions
+    - Implement validateTransaction, validateBudget, validateUser functions
+    - Validate date format (YYYY-MM-DD), numeric amounts, required fields
+    - _Requirements: 3.6, 3.7, 4.3, 9.4_
+  - [ ]* 3.4 Write unit tests for authentication utilities
+    - Create __tests__/auth.test.js with tests for password hashing and JWT generation
+    - Test token expiration and verification
+    - Mock environment variables for testing
+    - _Requirements: 10.6_
+
+- [ ] 4. Implement authentication API endpoints
+  - [ ] 4.1 Implement user registration endpoint
+    - Create netlify/functions/api-register.js
+    - Accept POST requests with username, email, password, role
+    - Hash password with bcrypt before storing
+    - Insert user into Supabase users table
+    - Return user profile (exclude password_hash)
+    - Handle duplicate username/email errors with 409 status
+    - _Requirements: 1.1, 1.4, 9.1_
+  - [ ] 4.2 Implement login endpoint
+    - Create netlify/functions/api-login.js
+    - Accept POST requests with username and password
+    - Query user from Supabase by username
+    - Compare password with stored hash
+    - Generate access token (15min expiry) and refresh token
+    - Return tokens and user profile
+    - Return 401 for invalid credentials
+    - _Requirements: 1.2, 1.4, 9.2, 9.3_
+  - [ ] 4.3 Implement token refresh endpoint
+    - Create netlify/functions/api-refresh.js
+    - Accept POST requests with refreshToken
+    - Verify refresh token signature
+    - Generate new access token
+    - Return new access token
+    - _Requirements: 1.3_
+  - [ ] 4.4 Implement profile endpoint
+    - Create netlify/functions/api-profile.js
+    - Accept GET requests with Authorization header
+    - Verify JWT token using auth middleware
+    - Query user from Supabase by user ID from token
+    - Return user profile (exclude password_hash)
+    - Return 401 for missing/invalid token
+    - _Requirements: 2.1, 2.2, 2.3_
+
+- [ ] 5. Implement transaction API endpoints
+  - [ ] 5.1 Implement get transactions endpoint
+    - Create netlify/functions/api-transactions.js for GET method
+    - Verify JWT token and extract user ID
+    - Parse start and end date query parameters
+    - Query transactions from Supabase filtered by user_id and date range
+    - Join with categories table to include category_name
+    - Return transactions array with total count
+    - _Requirements: 3.2, 3.7_
+  - [ ] 5.2 Implement create transaction endpoint
+    - Add POST method handler to netlify/functions/api-transactions.js
+    - Verify JWT token and extract user ID
+    - Validate request body (amount, date, category_id, description, is_expense)
+    - Insert transaction into Supabase with user_id from token
+    - Return created transaction with 201 status
+    - _Requirements: 3.1, 3.6, 3.7, 9.4_
+  - [ ] 5.3 Implement update transaction endpoint
+    - Create netlify/functions/api-transactions-id.js for PUT method
+    - Verify JWT token and extract user ID
+    - Parse transaction ID from path parameter
+    - Verify transaction belongs to authenticated user
+    - Validate request body
+    - Update transaction in Supabase
+    - Return 403 if user doesn't own transaction
+    - _Requirements: 3.3, 3.5, 9.4_
+  - [ ] 5.4 Implement delete transaction endpoint
+    - Add DELETE method handler to netlify/functions/api-transactions-id.js
+    - Verify JWT token and extract user ID
+    - Parse transaction ID from path parameter
+    - Verify transaction belongs to authenticated user
+    - Delete transaction from Supabase
+    - Return 204 on success, 403 if user doesn't own transaction
+    - _Requirements: 3.4, 3.5_
+
+- [ ] 6. Implement budget API endpoints
+  - [ ] 6.1 Implement get budgets endpoint
+    - Create netlify/functions/api-budgets.js for GET method
+    - Verify JWT token and extract user ID
+    - Query budgets from Supabase filtered by user_id
+    - Join with categories table to include category_name
+    - Calculate spent amount by aggregating transactions for each budget's category
+    - Return budgets array with spent amounts
+    - _Requirements: 4.2, 4.4_
+  - [ ] 6.2 Implement create budget endpoint
+    - Add POST method handler to netlify/functions/api-budgets.js
+    - Verify JWT token and extract user ID
+    - Validate request body (category_id, amount, period)
+    - Verify amount is positive
+    - Insert budget into Supabase with user_id from token
+    - Return created budget with 201 status
+    - _Requirements: 4.1, 4.3, 4.4_
+
+- [ ] 7. Implement reports API endpoint
+  - [ ] 7.1 Implement spending by category report
+    - Create netlify/functions/api-reports-spending.js
+    - Verify JWT token and extract user ID
+    - Parse start and end date query parameters (default to current month if not provided)
+    - Query transactions from Supabase filtered by user_id, date range, and is_expense=true
+    - Aggregate sum of amounts grouped by category_name
+    - Return array of {category_name, total} objects
+    - _Requirements: 5.1, 5.2, 5.3, 5.4_
+
+- [ ] 8. Implement CSV import endpoint
+  - [ ] 8.1 Implement CSV transaction import
+    - Create netlify/functions/api-import-csv.js
+    - Verify JWT token and extract user ID
+    - Parse multipart/form-data to extract CSV file
+    - Parse CSV rows (expected columns: date, amount, category, description, type)
+    - Validate each row and collect errors with row numbers
+    - Sanitize input to prevent injection attacks
+    - Insert valid transactions into Supabase in batch
+    - Return count of imported transactions and array of errors
+    - _Requirements: 6.1, 6.2, 6.3, 6.4, 9.4_
+
+- [ ] 9. Add CORS and error handling to all endpoints
+  - [ ] 9.1 Implement CORS headers
+    - Add CORS headers to all Netlify function responses
+    - Allow origin: deployed Netlify URL and http://localhost:5173
+    - Allow headers: Content-Type, Authorization
+    - Allow methods: GET, POST, PUT, DELETE, OPTIONS
+    - Handle OPTIONS preflight requests
+    - _Requirements: 9.5_
+  - [ ] 9.2 Implement consistent error handling
+    - Wrap all function handlers in try-catch blocks
+    - Return consistent error response format: {error: {message, code, details}}
+    - Map common errors to appropriate HTTP status codes
+    - Log errors with context for debugging
+    - Handle JWT errors with 401 status
+    - Handle Postgres unique violations with 409 status
+    - _Requirements: 9.6_
+
+- [ ] 10. Initialize frontend React application
+  - [ ] 10.1 Create Vite React project
+    - Run npm create vite@latest in frontend directory
+    - Select React template
+    - Install dependencies: react-router-dom, axios, chart.js, react-chartjs-2
+    - Configure vite.config.js with proxy for local API calls
+    - _Requirements: 8.8_
+  - [ ] 10.2 Set up TailwindCSS
+    - Install tailwindcss, postcss, autoprefixer
+    - Initialize Tailwind config with npx tailwindcss init
+    - Configure tailwind.config.js with content paths
+    - Add Tailwind directives to index.css
+    - _Requirements: 8.7_
+  - [ ] 10.3 Create API service layer
+    - Create src/services/api.js with Axios instance
+    - Configure base URL from VITE_API_BASE_URL environment variable
+    - Add request interceptor to attach Authorization header from localStorage
+    - Add response interceptor to handle 401 errors and refresh tokens
+    - _Requirements: 8.8, 8.9_
+  - [ ] 10.4 Create authentication service
+    - Create src/services/auth.js with login, register, logout, refreshToken functions
+    - Implement token storage in localStorage
+    - Export functions for use in components
+    - _Requirements: 8.1_
+  - [ ] 10.5 Create custom hooks
+    - Create src/hooks/useAuth.js hook for authentication state management
+    - Create src/hooks/useApi.js hook for data fetching with loading and error states
+    - _Requirements: 8.1_
+
+- [ ] 11. Implement frontend authentication pages
+  - [ ] 11.1 Create login page
+    - Create src/pages/Login.jsx with login form
+    - Include username and password input fields
+    - Call auth service login method on form submit
+    - Store tokens in localStorage on success
+    - Redirect to dashboard after successful login
+    - Display error messages for failed login
+    - _Requirements: 8.1_
+  - [ ] 11.2 Create registration page
+    - Create src/pages/Register.jsx with registration form
+    - Include username, email, password, and role fields
+    - Validate form inputs (email format, password length)
+    - Call auth service register method on form submit
+    - Redirect to login page after successful registration
+    - Display error messages for validation failures
+    - _Requirements: 8.1_
+  - [ ] 11.3 Create protected route component
+    - Create src/components/common/ProtectedRoute.jsx
+    - Check for valid access token in localStorage
+    - Redirect to login if not authenticated
+    - Render children if authenticated
+    - _Requirements: 8.1_
+  - [ ] 11.4 Set up routing
+    - Configure React Router in src/App.jsx
+    - Define routes: /login, /register, /dashboard, /transactions, /budgets, /reports
+    - Wrap protected routes with ProtectedRoute component
+    - Add navigation bar with logout button
+    - _Requirements: 8.1_
+
+- [ ] 12. Implement dashboard page
+  - [ ] 12.1 Create account summary component
+    - Create src/components/dashboard/AccountSummary.jsx
+    - Fetch transactions from API on component mount
+    - Calculate total balance (sum of income - sum of expenses)
+    - Calculate monthly income (sum of income transactions for current month)
+    - Calculate monthly expenses (sum of expense transactions for current month)
+    - Display metrics in card layout
+    - _Requirements: 8.2_
+  - [ ] 12.2 Create recent transactions component
+    - Create src/components/dashboard/RecentTransactions.jsx
+    - Fetch last 10 transactions from API
+    - Display in table format with date, description, category, amount
+    - Add link to full transactions page
+    - _Requirements: 8.2_
+  - [ ] 12.3 Create quick add transaction modal
+    - Create src/components/dashboard/QuickAddModal.jsx
+    - Include form fields: amount, date, category, description, type (income/expense)
+    - Fetch categories from API for dropdown
+    - Submit transaction to API on form submit
+    - Close modal and refresh transactions on success
+    - _Requirements: 8.2_
+  - [ ] 12.4 Assemble dashboard page
+    - Create src/pages/Dashboard.jsx
+    - Render AccountSummary, RecentTransactions, and QuickAddModal components
+    - Add button to open quick add modal
+    - Implement responsive grid layout
+    - _Requirements: 8.2_
+
+- [ ] 13. Implement transactions page
+  - [ ] 13.1 Create transaction list component
+    - Create src/components/transactions/TransactionList.jsx
+    - Fetch transactions from API with pagination
+    - Display in table with columns: date, description, category, amount, actions
+    - Add edit and delete buttons for each row
+    - Implement delete confirmation dialog
+    - Refresh list after edit/delete operations
+    - _Requirements: 8.3_
+  - [ ] 13.2 Create transaction filters component
+    - Create src/components/transactions/TransactionFilters.jsx
+    - Add date range picker for start and end dates
+    - Add category dropdown filter
+    - Add apply and reset buttons
+    - Pass filter values to parent component
+    - _Requirements: 8.3_
+  - [ ] 13.3 Create transaction form component
+    - Create src/components/transactions/TransactionForm.jsx
+    - Include fields: amount, date, category, description, type
+    - Support both create and edit modes
+    - Validate required fields
+    - Submit to API on form submit
+    - _Requirements: 8.3_
+  - [ ] 13.4 Create pagination component
+    - Create src/components/common/Pagination.jsx
+    - Display page numbers and next/previous buttons
+    - Handle page change events
+    - Show current page and total pages
+    - _Requirements: 8.3_
+  - [ ] 13.5 Assemble transactions page
+    - Create src/pages/Transactions.jsx
+    - Render TransactionFilters, TransactionList, and Pagination components
+    - Manage filter state and pass to API calls
+    - Add button to open transaction form for creating new transactions
+    - _Requirements: 8.3_
+
+- [ ] 14. Implement budgets page
+  - [ ] 14.1 Create budget list component
+    - Create src/components/budgets/BudgetList.jsx
+    - Fetch budgets from API on component mount
+    - Display each budget with category, amount, period
+    - Render BudgetUtilization component for each budget
+    - Add delete button for each budget
+    - _Requirements: 8.4_
+  - [ ] 14.2 Create budget utilization component
+    - Create src/components/budgets/BudgetUtilization.jsx
+    - Calculate utilization percentage (spent / budget * 100)
+    - Render progress bar with color coding: green (<70%), yellow (70-90%), red (>90%)
+    - Display percentage and amounts (spent / budget)
+    - _Requirements: 8.4_
+  - [ ] 14.3 Create budget form component
+    - Create src/components/budgets/BudgetForm.jsx
+    - Include fields: category, amount, period
+    - Fetch categories from API for dropdown
+    - Validate amount is positive
+    - Submit to API on form submit
+    - _Requirements: 8.4_
+  - [ ] 14.4 Assemble budgets page
+    - Create src/pages/Budgets.jsx
+    - Render BudgetList and BudgetForm components
+    - Add button to open budget form
+    - Refresh budget list after creating new budget
+    - _Requirements: 8.4_
+
+- [ ] 15. Implement reports page
+  - [ ] 15.1 Create spending by category chart component
+    - Create src/components/reports/SpendingByCategory.jsx
+    - Fetch spending data from reports API
+    - Configure Chart.js pie chart with category names and amounts
+    - Add date range filter controls
+    - Display legend with category names and totals
+    - _Requirements: 8.5_
+  - [ ] 15.2 Create spending over time chart component
+    - Create src/components/reports/SpendingOverTime.jsx
+    - Fetch transactions from API grouped by date
+    - Aggregate spending by day/week/month
+    - Configure Chart.js bar or line chart
+    - Add date range filter controls
+    - _Requirements: 8.5_
+  - [ ] 15.3 Assemble reports page
+    - Create src/pages/Reports.jsx
+    - Render SpendingByCategory and SpendingOverTime components
+    - Implement responsive layout for charts
+    - Add export options (optional)
+    - _Requirements: 8.5_
+
+- [ ] 16. Implement common UI components
+  - [ ] 16.1 Create navigation bar
+    - Create src/components/common/Navbar.jsx
+    - Display app logo and navigation links
+    - Show user profile information
+    - Add logout button that clears tokens and redirects to login
+    - Implement responsive mobile menu
+    - _Requirements: 8.6_
+  - [ ] 16.2 Style application with TailwindCSS
+    - Apply consistent color scheme and typography
+    - Style forms with proper spacing and validation states
+    - Style buttons with hover and active states
+    - Ensure responsive design for mobile, tablet, and desktop
+    - Add loading spinners for async operations
+    - _Requirements: 8.6, 8.7_
+
+- [ ] 17. Set up CI/CD pipeline
+  - [ ] 17.1 Create GitHub Actions workflow
+    - Create .github/workflows/ci.yml
+    - Configure workflow to run on push and pull_request events
+    - Add job for frontend: install dependencies, run ESLint, build
+    - Add job for backend: install dependencies, run tests
+    - Use Node.js 18 for all jobs
+    - _Requirements: 10.4, 10.5, 10.7_
+  - [ ] 17.2 Configure ESLint for frontend
+    - Install eslint and necessary plugins
+    - Create .eslintrc.json with React and ES6 rules
+    - Add lint script to frontend/package.json
+    - _Requirements: 10.7_
+  - [ ]* 17.3 Set up Jest for backend testing
+    - Install jest and necessary dependencies in netlify/functions
+    - Create jest.config.js
+    - Write sample tests for auth utilities
+    - Add test script to package.json
+    - _Requirements: 10.6_
+
+- [ ] 18. Configure Netlify deployment
+  - [ ] 18.1 Create Netlify configuration file
+    - Create netlify.toml in project root
+    - Configure build command: cd frontend && npm ci && npm run build
+    - Set publish directory to frontend/dist
+    - Set functions directory to netlify/functions
+    - Add redirect rules for SPA routing and API proxy
+    - _Requirements: 10.1, 10.2_
+  - [ ] 18.2 Document Netlify setup
+    - Add Netlify deployment instructions to README.md
+    - Document how to connect GitHub repository to Netlify
+    - List all required environment variables for Netlify dashboard
+    - Provide example values for VITE_API_BASE_URL
+    - Document how to verify functions are deployed
+    - _Requirements: 10.3, 11.1, 11.5_
+
+- [ ] 19. Create comprehensive documentation
+  - [ ] 19.1 Write README.md
+    - Add project overview and features list
+    - Document technology stack
+    - Provide step-by-step local development setup
+    - Include instructions for Supabase project creation
+    - Document environment variables with .env.example reference
+    - Add instructions for running frontend and backend locally
+    - Include Netlify CLI setup for local function testing
+    - _Requirements: 11.1, 11.3, 11.5, 11.6_
+  - [ ] 19.2 Document API endpoints
+    - Create API documentation section in README.md
+    - List all endpoints with HTTP methods
+    - Provide request and response examples for each endpoint
+    - Document authentication requirements
+    - Include error response formats
+    - _Requirements: 11.3, 11.8_
+  - [ ] 19.3 Document sample credentials
+    - List sample user credentials from seed data
+    - Include username and password for test users
+    - Document user roles (user vs hardcoder)
+    - Provide instructions for creating new users
+    - _Requirements: 11.8_
+  - [ ] 19.4 Create .env.example file
+    - List all required environment variables
+    - Add comments explaining each variable
+    - Provide placeholder values (no actual secrets)
+    - Include both frontend and backend variables
+    - _Requirements: 11.2_
+
+- [ ] 20. Deploy and verify application
+  - [ ] 20.1 Push code to GitHub
+    - Commit all code changes
+    - Push to main branch of public repository
+    - Verify all files are included (check .gitignore)
+    - _Requirements: 12.3, 12.4_
+  - [ ] 20.2 Connect Netlify to GitHub
+    - Create new Netlify site from GitHub repository
+    - Configure build settings according to netlify.toml
+    - Add environment variables in Netlify dashboard
+    - Trigger initial deployment
+    - _Requirements: 10.1, 10.2, 10.3_
+  - [ ] 20.3 Set up Supabase database
+    - Create Supabase project
+    - Run migrations.sql in SQL editor
+    - Run seed.sql to populate sample data
+    - Copy project URL and service role key to Netlify environment variables
+    - _Requirements: 7.6, 7.7_
+  - [ ] 20.4 Verify deployment
+    - Visit deployed Netlify site URL
+    - Test user registration and login
+    - Verify transactions CRUD operations work
+    - Test budget creation and viewing
+    - Verify reports page displays charts correctly
+    - Test API endpoints directly (using curl or Postman)
+    - Check Netlify function logs for errors
+    - Verify GitHub Actions CI pipeline passes
+    - _Requirements: 12.5_

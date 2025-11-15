@@ -1,0 +1,26 @@
+{
+  "name": "kiro-personal-finance",
+  "version": "1.0.0",
+  "description": "Personal Finance MVP - Track spending, manage budgets, and visualize financial patterns",
+  "private": true,
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "cd frontend && npm run build",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/kiro-personal-finance.git"
+  },
+  "keywords": [
+    "finance",
+    "budget",
+    "transactions",
+    "personal-finance",
+    "react",
+    "netlify",
+    "supabase"
+  ],
+  "author": "",
+  "license": "MIT"
+}
