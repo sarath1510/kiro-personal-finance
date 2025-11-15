@@ -329,29 +329,39 @@
     - Include form fields: amount, date, category, description, type (income/expense)
     - Fetch categories from API for dropdown
     - Submit transaction to API on form submit
+
     - Close modal and refresh transactions on success
+
+
     - _Requirements: 8.2_
   - [ ] 12.4 Assemble dashboard page
     - Create src/pages/Dashboard.jsx
     - Render AccountSummary, RecentTransactions, and QuickAddModal components
     - Add button to open quick add modal
     - Implement responsive grid layout
+
+
     - _Requirements: 8.2_
 
 - [ ] 13. Implement transactions page
   - [ ] 13.1 Create transaction list component
     - Create src/components/transactions/TransactionList.jsx
+
+
     - Fetch transactions from API with pagination
     - Display in table with columns: date, description, category, amount, actions
     - Add edit and delete buttons for each row
     - Implement delete confirmation dialog
     - Refresh list after edit/delete operations
+
     - _Requirements: 8.3_
   - [ ] 13.2 Create transaction filters component
     - Create src/components/transactions/TransactionFilters.jsx
     - Add date range picker for start and end dates
     - Add category dropdown filter
     - Add apply and reset buttons
+
+
     - Pass filter values to parent component
     - _Requirements: 8.3_
   - [ ] 13.3 Create transaction form component
