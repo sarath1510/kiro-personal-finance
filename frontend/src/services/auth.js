@@ -10,7 +10,7 @@ const authService = {
    * @returns {Promise} User data
    */
   async register(userData) {
-    const response = await api.post('/api/register', userData);
+    const response = await api.post('/.netlify/functions/api-register', userData);
     return response.data;
   },
 
@@ -21,7 +21,7 @@ const authService = {
    * @returns {Promise} { accessToken, refreshToken, user }
    */
   async login(username, password) {
-    const response = await api.post('/api/login', { username, password });
+    const response = await api.post('/.netlify/functions/api-login', { username, password });
     const { accessToken, refreshToken, user } = response.data;
     
     // Store tokens
@@ -70,7 +70,7 @@ const authService = {
    * @returns {Promise} User profile
    */
   async getProfile() {
-    const response = await api.get('/api/profile');
+    const response = await api.get('/.netlify/functions/api-profile');
     const user = response.data;
     localStorage.setItem('user', JSON.stringify(user));
     return user;
@@ -86,7 +86,7 @@ const authService = {
       throw new Error('No refresh token available');
     }
 
-    const response = await api.post('/api/refresh', { refreshToken });
+    const response = await api.post('/.netlify/functions/api-refresh', { refreshToken });
     const { accessToken } = response.data;
     localStorage.setItem('accessToken', accessToken);
     return accessToken;
