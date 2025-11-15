@@ -152,8 +152,11 @@
     - Return 204 on success, 403 if user doesn't own transaction
     - _Requirements: 3.4, 3.5_
 
-- [ ] 6. Implement budget API endpoints
-  - [ ] 6.1 Implement get budgets endpoint
+- [x] 6. Implement budget API endpoints
+
+  - [x] 6.1 Implement get budgets endpoint
+
+
     - Create netlify/functions/api-budgets.js for GET method
     - Verify JWT token and extract user ID
     - Query budgets from Supabase filtered by user_id
@@ -161,7 +164,8 @@
     - Calculate spent amount by aggregating transactions for each budget's category
     - Return budgets array with spent amounts
     - _Requirements: 4.2, 4.4_
-  - [ ] 6.2 Implement create budget endpoint
+  - [x] 6.2 Implement create budget endpoint
+
     - Add POST method handler to netlify/functions/api-budgets.js
     - Verify JWT token and extract user ID
     - Validate request body (category_id, amount, period)
@@ -170,8 +174,11 @@
     - Return created budget with 201 status
     - _Requirements: 4.1, 4.3, 4.4_
 
-- [ ] 7. Implement reports API endpoint
-  - [ ] 7.1 Implement spending by category report
+- [x] 7. Implement reports API endpoint
+
+  - [x] 7.1 Implement spending by category report
+
+
     - Create netlify/functions/api-reports-spending.js
     - Verify JWT token and extract user ID
     - Parse start and end date query parameters (default to current month if not provided)
