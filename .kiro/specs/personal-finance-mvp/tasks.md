@@ -199,15 +199,18 @@
     - Return count of imported transactions and array of errors
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 9.4_
 
-- [ ] 9. Add CORS and error handling to all endpoints
-  - [ ] 9.1 Implement CORS headers
+- [x] 9. Add CORS and error handling to all endpoints
+
+  - [x] 9.1 Implement CORS headers
+
     - Add CORS headers to all Netlify function responses
     - Allow origin: deployed Netlify URL and http://localhost:5173
     - Allow headers: Content-Type, Authorization
     - Allow methods: GET, POST, PUT, DELETE, OPTIONS
     - Handle OPTIONS preflight requests
     - _Requirements: 9.5_
-  - [ ] 9.2 Implement consistent error handling
+  - [x] 9.2 Implement consistent error handling
+
     - Wrap all function handlers in try-catch blocks
     - Return consistent error response format: {error: {message, code, details}}
     - Map common errors to appropriate HTTP status codes
@@ -216,31 +219,42 @@
     - Handle Postgres unique violations with 409 status
     - _Requirements: 9.6_
 
-- [ ] 10. Initialize frontend React application
-  - [ ] 10.1 Create Vite React project
+- [x] 10. Initialize frontend React application
+
+  - [x] 10.1 Create Vite React project
+
+
     - Run npm create vite@latest in frontend directory
     - Select React template
     - Install dependencies: react-router-dom, axios, chart.js, react-chartjs-2
     - Configure vite.config.js with proxy for local API calls
     - _Requirements: 8.8_
-  - [ ] 10.2 Set up TailwindCSS
+  - [x] 10.2 Set up TailwindCSS
+
+
     - Install tailwindcss, postcss, autoprefixer
     - Initialize Tailwind config with npx tailwindcss init
     - Configure tailwind.config.js with content paths
     - Add Tailwind directives to index.css
     - _Requirements: 8.7_
-  - [ ] 10.3 Create API service layer
+  - [x] 10.3 Create API service layer
+
+
     - Create src/services/api.js with Axios instance
     - Configure base URL from VITE_API_BASE_URL environment variable
     - Add request interceptor to attach Authorization header from localStorage
     - Add response interceptor to handle 401 errors and refresh tokens
     - _Requirements: 8.8, 8.9_
-  - [ ] 10.4 Create authentication service
+  - [x] 10.4 Create authentication service
+
+
     - Create src/services/auth.js with login, register, logout, refreshToken functions
     - Implement token storage in localStorage
     - Export functions for use in components
     - _Requirements: 8.1_
-  - [ ] 10.5 Create custom hooks
+  - [x] 10.5 Create custom hooks
+
+
     - Create src/hooks/useAuth.js hook for authentication state management
     - Create src/hooks/useApi.js hook for data fetching with loading and error states
     - _Requirements: 8.1_
