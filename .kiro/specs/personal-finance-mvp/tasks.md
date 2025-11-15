@@ -69,6 +69,7 @@
 
 - [x] 4. Implement authentication API endpoints
 
+
   - [x] 4.1 Implement user registration endpoint
 
 
@@ -110,8 +111,11 @@
     - Return 401 for missing/invalid token
     - _Requirements: 2.1, 2.2, 2.3_
 
-- [ ] 5. Implement transaction API endpoints
-  - [ ] 5.1 Implement get transactions endpoint
+- [x] 5. Implement transaction API endpoints
+
+  - [x] 5.1 Implement get transactions endpoint
+
+
     - Create netlify/functions/api-transactions.js for GET method
     - Verify JWT token and extract user ID
     - Parse start and end date query parameters
@@ -119,14 +123,17 @@
     - Join with categories table to include category_name
     - Return transactions array with total count
     - _Requirements: 3.2, 3.7_
-  - [ ] 5.2 Implement create transaction endpoint
+  - [x] 5.2 Implement create transaction endpoint
+
     - Add POST method handler to netlify/functions/api-transactions.js
     - Verify JWT token and extract user ID
     - Validate request body (amount, date, category_id, description, is_expense)
     - Insert transaction into Supabase with user_id from token
     - Return created transaction with 201 status
     - _Requirements: 3.1, 3.6, 3.7, 9.4_
-  - [ ] 5.3 Implement update transaction endpoint
+  - [x] 5.3 Implement update transaction endpoint
+
+
     - Create netlify/functions/api-transactions-id.js for PUT method
     - Verify JWT token and extract user ID
     - Parse transaction ID from path parameter
@@ -135,7 +142,8 @@
     - Update transaction in Supabase
     - Return 403 if user doesn't own transaction
     - _Requirements: 3.3, 3.5, 9.4_
-  - [ ] 5.4 Implement delete transaction endpoint
+  - [x] 5.4 Implement delete transaction endpoint
+
     - Add DELETE method handler to netlify/functions/api-transactions-id.js
     - Verify JWT token and extract user ID
     - Parse transaction ID from path parameter
