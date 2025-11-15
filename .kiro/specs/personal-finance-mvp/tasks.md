@@ -67,8 +67,11 @@
     - Mock environment variables for testing
     - _Requirements: 10.6_
 
-- [ ] 4. Implement authentication API endpoints
-  - [ ] 4.1 Implement user registration endpoint
+- [x] 4. Implement authentication API endpoints
+
+  - [x] 4.1 Implement user registration endpoint
+
+
     - Create netlify/functions/api-register.js
     - Accept POST requests with username, email, password, role
     - Hash password with bcrypt before storing
@@ -76,7 +79,9 @@
     - Return user profile (exclude password_hash)
     - Handle duplicate username/email errors with 409 status
     - _Requirements: 1.1, 1.4, 9.1_
-  - [ ] 4.2 Implement login endpoint
+  - [x] 4.2 Implement login endpoint
+
+
     - Create netlify/functions/api-login.js
     - Accept POST requests with username and password
     - Query user from Supabase by username
@@ -85,14 +90,18 @@
     - Return tokens and user profile
     - Return 401 for invalid credentials
     - _Requirements: 1.2, 1.4, 9.2, 9.3_
-  - [ ] 4.3 Implement token refresh endpoint
+  - [x] 4.3 Implement token refresh endpoint
+
+
     - Create netlify/functions/api-refresh.js
     - Accept POST requests with refreshToken
     - Verify refresh token signature
     - Generate new access token
     - Return new access token
     - _Requirements: 1.3_
-  - [ ] 4.4 Implement profile endpoint
+  - [x] 4.4 Implement profile endpoint
+
+
     - Create netlify/functions/api-profile.js
     - Accept GET requests with Authorization header
     - Verify JWT token using auth middleware
