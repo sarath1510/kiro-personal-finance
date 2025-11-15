@@ -21,23 +21,8 @@ function QuickAddModal({ isOpen, onClose, onSuccess }) {
 
   const fetchCategories = async () => {
     try {
-      // For now, we'll need to get categories from transactions
-      // In a full implementation, you'd have a separate categories endpoint
-      const response = await api.get('/.netlify/functions/api-transactions');
-      const transactions = response.data.transactions || [];
-      
-      // Extract unique categories
-      const uniqueCategories = {};
-      transactions.forEach(t => {
-        if (t.category_id && t.category_name) {
-          uniqueCategories[t.category_id] = t.category_name;
-        }
-      });
-      
-      const categoryList = Object.entries(uniqueCategories).map(([id, name]) => ({
-        id,
-        name
-      }));
+      const response = await api.get('/.netlify/functions/api-categories');
+      const categoryList = response.data.categories || [];
       
       setCategories(categoryList);
       if (categoryList.length > 0 && !formData.category_id) {

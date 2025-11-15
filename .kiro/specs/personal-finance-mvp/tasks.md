@@ -301,6 +301,7 @@
 
 - [x] 12. Implement dashboard page
 
+
   - [x] 12.1 Create account summary component
 
 
