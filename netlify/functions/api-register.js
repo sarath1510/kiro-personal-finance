@@ -102,6 +102,34 @@ exports.handler = async (event) => {
       throw error;
     }
 
+    // Create default categories for new user
+    const defaultCategories = [
+      'Salary',
+      'Groceries',
+      'Entertainment',
+      'Utilities',
+      'Transportation',
+      'Dining Out',
+      'Healthcare',
+      'Shopping',
+      'Rent',
+      'Other'
+    ];
+
+    const categoryInserts = defaultCategories.map(name => ({
+      user_id: user.id,
+      name: name
+    }));
+
+    const { error: categoryError } = await supabase
+      .from('categories')
+      .insert(categoryInserts);
+
+    if (categoryError) {
+      console.error('Failed to create default categories:', categoryError);
+      // Don't fail registration if categories fail, just log it
+    }
+
     // Return created user (without password hash)
     return {
       statusCode: 201,
