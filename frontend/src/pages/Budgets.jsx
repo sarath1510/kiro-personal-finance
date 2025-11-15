@@ -40,32 +40,30 @@ function Budgets() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-light-blue">
       <Navbar />
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">Budgets</h1>
-            <button
-              onClick={() => setIsFormOpen(true)}
-              className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              Create Budget
-            </button>
-          </div>
-
-          {loading ? (
-            <div className="bg-white rounded-lg shadow p-8 text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-              <p className="mt-4 text-gray-600">Loading budgets...</p>
-            </div>
-          ) : (
-            <BudgetList budgets={budgets} onDelete={handleDelete} />
-          )}
+      <div className="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Budgets</h1>
+          <button
+            onClick={() => setIsFormOpen(true)}
+            className="bg-bright-blue hover:bg-primary-700 text-white px-4 py-2 rounded-md flex items-center justify-center gap-2 text-sm sm:text-base"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Create Budget
+          </button>
         </div>
+
+        {loading ? (
+          <div className="bg-white rounded-lg shadow p-8 text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-bright-blue mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading budgets...</p>
+          </div>
+        ) : (
+          <BudgetList budgets={budgets} onDelete={handleDelete} />
+        )}
       </div>
 
       {isFormOpen && (

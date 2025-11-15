@@ -18,14 +18,14 @@ Click **"Create repository"**
 
 Copy your repository URL from GitHub (it will look like):
 ```
-https://github.com/YOUR_USERNAME/kiro-personal-finance.git
+https://github.com/sarath1510/kiro-personal-finance.git
 ```
 
 Then run these commands in your terminal:
 
 ```bash
 # Add GitHub as remote (replace YOUR_USERNAME)
-git remote add origin https://github.com/YOUR_USERNAME/kiro-personal-finance.git
+git remote add origin https://github.com/sarath1510/kiro-personal-finance.git
 
 # Push your code
 git branch -M main
@@ -58,7 +58,7 @@ git push -u origin main
 | `SUPABASE_SERVICE_ROLE_KEY` | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsY2RlempwdHR2em1sa3B5Z2dwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzIwMDExMCwiZXhwIjoyMDc4Nzc2MTEwfQ.aBbf98wBjGPSuTHPVJzKfdSQMDrSDPKQX37d1TEy9fo` |
 | `JWT_SECRET` | `fb67bdd91981c3313ef56b19919e35681d2c0c2b0b6d46162253995b1e1efae0` |
 | `NODE_ENV` | `production` |
-| `VITE_API_BASE_URL` | `https://YOUR-SITE-NAME.netlify.app` |
+| `VITE_API_BASE_URL` | `https://sarathpersonalfinancetool.netlify.app` |
 
 **Note:** For `VITE_API_BASE_URL`, use your actual Netlify site URL (you'll see it after first deploy)
 

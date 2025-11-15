@@ -34,66 +34,110 @@ function TransactionList({ transactions, onEdit, onDelete, onRefresh }) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow overflow-hidden">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Date
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Description
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Category
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Amount
-            </th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {transactions.map((transaction) => (
-            <tr key={transaction.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                {new Date(transaction.date).toLocaleDateString()}
-              </td>
-              <td className="px-6 py-4 text-sm text-gray-900">
-                {transaction.description || 'No description'}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                  {transaction.category_name}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">
-                <span className={transaction.is_expense ? 'text-red-600' : 'text-green-600'}>
-                  {transaction.is_expense ? '-' : '+'}${parseFloat(transaction.amount).toFixed(2)}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+    <>
+      {/* Desktop view */}
+      <div className="hidden md:block bg-white rounded-lg shadow overflow-hidden">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Date
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Description
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Category
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Amount
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {transactions.map((transaction) => (
+              <tr key={transaction.id} className="hover:bg-gray-50">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {new Date(transaction.date).toLocaleDateString()}
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-900">
+                  {transaction.description || 'No description'}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-light-blue text-gray-800">
+                    {transaction.category_name}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">
+                  <span className={transaction.is_expense ? 'text-red-600' : 'text-green-600'}>
+                    {transaction.is_expense ? '-' : '+'}${parseFloat(transaction.amount).toFixed(2)}
+                  </span>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button
+                    onClick={() => onEdit(transaction)}
+                    className="text-bright-blue hover:text-primary-700 mr-4"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(transaction.id)}
+                    disabled={deletingId === transaction.id}
+                    className="text-red-600 hover:text-red-900 disabled:opacity-50"
+                  >
+                    {deletingId === transaction.id ? 'Deleting...' : 'Delete'}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile view */}
+      <div className="md:hidden space-y-3">
+        {transactions.map((transaction) => (
+          <div key={transaction.id} className="bg-white rounded-lg shadow p-4">
+            <div className="flex justify-between items-start mb-2">
+              <div className="flex-1">
+                <p className="font-semibold text-gray-900">
+                  {transaction.description || 'No description'}
+                </p>
+                <p className="text-sm text-gray-500">
+                  {new Date(transaction.date).toLocaleDateString()}
+                </p>
+              </div>
+              <span className={`text-lg font-bold ${transaction.is_expense ? 'text-red-600' : 'text-green-600'}`}>
+                {transaction.is_expense ? '-' : '+'}${parseFloat(transaction.amount).toFixed(2)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="px-2 py-1 text-xs font-semibold rounded-full bg-light-blue text-gray-800">
+                {transaction.category_name}
+              </span>
+              <div className="flex gap-3">
                 <button
                   onClick={() => onEdit(transaction)}
-                  className="text-primary-600 hover:text-primary-900 mr-4"
+                  className="text-bright-blue hover:text-primary-700 text-sm font-medium"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(transaction.id)}
                   disabled={deletingId === transaction.id}
-                  className="text-red-600 hover:text-red-900 disabled:opacity-50"
+                  className="text-red-600 hover:text-red-900 disabled:opacity-50 text-sm font-medium"
                 >
                   {deletingId === transaction.id ? 'Deleting...' : 'Delete'}
                 </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }
 

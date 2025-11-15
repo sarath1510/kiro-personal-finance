@@ -104,15 +104,17 @@ exports.handler = async (event) => {
 
     // Create default categories for new user
     const defaultCategories = [
-      'Salary',
-      'Groceries',
+      'Travel',
+      'Food',
       'Entertainment',
+      'Groceries',
+      'Healthcare',
+      'Rent',
+      'Salary',
+      'Shopping',
+      'Trip',
       'Utilities',
       'Transportation',
-      'Dining Out',
-      'Healthcare',
-      'Shopping',
-      'Rent',
       'Other'
     ];
 
