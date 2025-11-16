@@ -4,7 +4,7 @@ A full-stack personal finance management application with user authentication, t
 
 ## 🚀 Live Demo
 
-**Deployed URL**: [Your Netlify URL]
+**Deployed URL**: https://sarathpersonalfinancetool.netlify.app
 
 **Test Account**:
 - Username: `sarath123`
