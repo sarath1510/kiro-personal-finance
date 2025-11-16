@@ -42,3 +42,15 @@ coverage/
 # Misc
 *.tgz
 .cache/
+
+# Documentation (keep locally, exclude from git)
+DEPLOYMENT.md
+FINAL_DEPLOYMENT.md
+IMPORTANT_NOTES.md
+LOCAL_SETUP.md
+PROJECT_SUMMARY.md
+QUICK_START.md
+SETUP_DATABASE.md
+SHARE_INSTRUCTIONS.md
+TEST_SERVER.md
+TRANSACTION_SUMMARY.md
