@@ -54,3 +54,8 @@ SETUP_DATABASE.md
 SHARE_INSTRUCTIONS.md
 TEST_SERVER.md
 TRANSACTION_SUMMARY.md
+
+# Scripts and seed data (keep locally, exclude from git)
+scripts/
+sql/seed.sql
+sql/add_sarath_transactions.sql
