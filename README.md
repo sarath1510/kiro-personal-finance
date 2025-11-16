@@ -61,10 +61,7 @@ A full-stack personal finance management application with user authentication, t
 │
 ├── sql/                     # Database schema and seeds
 │   ├── migrations.sql       # Database schema
-│   └── seed.sql             # Sample data
-│
-├── scripts/                 # Utility scripts
-│   └── add-transactions.js  # Script to add sample data
+│   
 │
 ├── netlify.toml             # Netlify configuration
 └── README.md                # This file
