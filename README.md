@@ -7,8 +7,8 @@ A full-stack personal finance management application with user authentication, t
 **Deployed URL**: [Your Netlify URL]
 
 **Test Account**:
-- Username: `sarath1510`
-- Password: `sarath1510`
+- Username: `sarath123`
+- Password: `sarath123`
 
 ## 📋 Features
 
